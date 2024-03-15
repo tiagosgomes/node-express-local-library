@@ -13,6 +13,9 @@ const helmet = require("helmet");
 
 const app = express();
 
+// Added to resolve erro ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
+app.set('trust proxy', 1);
+
 // Set up rate limiter: maximum of twenty requests per minute
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
@@ -26,7 +29,7 @@ app.use(limiter);
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const dev_db_url = "mongodb+srv://<user>:<password>@cluster0.pvdna1z.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0";
+const dev_db_url = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.pvdna1z.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0`;
 
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
